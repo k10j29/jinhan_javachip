@@ -1,0 +1,22 @@
+package mymain;
+
+import java.util.Scanner;
+
+public class MyMain_달팽이 {
+
+	public static void main(String[] args) {
+
+		Scanner scan = new Scanner(System.in);
+		int chasu
+		String yn = "y";
+		
+		while (true)
+			System.out.print("차수 : ");
+		chasu = scan.nextInt();
+		
+		//달팽이한테 차수전달
+		
+
+	}
+
+}

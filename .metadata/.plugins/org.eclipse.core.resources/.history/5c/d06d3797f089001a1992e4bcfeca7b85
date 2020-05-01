@@ -1,0 +1,93 @@
+package myutil;
+
+public class Snail2 {
+
+	import java.util.InputMismatchException;
+
+	import java.util.Scanner;
+
+	    public static void main(String[] args){
+
+	    	Scanner scan = new Scanner(System.in);
+
+	    	int deg;
+
+	    	while(true){
+
+		    	System.out.print("달팽이의 차수를 입력하세요 : ");
+
+		    	try{
+
+		    		deg = scan.nextInt();
+
+		    		break;
+
+		    	}catch(InputMismatchException e){
+
+		    		System.out.println("숫자만 입력해야 합니다.");
+
+		    	}
+
+	    	}
+
+	    	scan.close();
+
+	    	int print = deg;
+
+	        int row=0,col=-1;
+
+	        int sw=1;
+
+	        int snail[][]= new int[deg][deg];
+
+	        
+
+	        int i =1;
+
+	        
+
+	        while(true){
+
+	        	for(int cnt=0;cnt<deg;cnt++){
+
+	        		col=col+sw;
+
+	        		snail[row][col]=i++;
+
+	        	}
+
+	        	deg=deg-1;
+
+	        	if(deg==0)
+
+	        	break;        	
+
+	        	for(int cnt=0;cnt<deg;cnt++){
+
+	        		row=row+sw;
+
+	        		snail[row][col]=i++;
+
+	        	}
+
+	        	sw=sw*(-1);
+
+	        }
+
+	        
+
+	        //출력
+
+	        for(row=0;row<print;row++){
+
+	            for(col=0;col<print;col++){
+
+	                System.out.printf("%3d",snail[row][col]);
+
+	            }
+
+	            System.out.println();
+
+	        }
+
+	    }

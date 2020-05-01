@@ -1,0 +1,35 @@
+class Ex_for3 
+{
+	public static void main(String[] args) 
+	{
+		int n = 10;
+		int sum = 0;
+		//n 까지의 합
+		for(int i=0;i<=n ;i++){
+           sum += i;// sum = sum + i
+		}
+		System.out.printf("%d까지의 합:%d\n", n,sum);
+//------------------------------------------------------------
+        //n 까지의 짝수의 합
+		//방법1
+		sum = 0;
+		//n 까지의 합
+		for(int i=0;i<=n ;i++){
+			if(i%2==0)//짝수면
+               sum += i;// sum = sum + i
+		}
+		System.out.printf("%d까지의 짝수의 합:%d\n", n,sum);
+        
+		//방법2
+		sum = 0;
+		int m=2;
+		//n 까지의 합
+		for(int i=0;i<=n ; i=i+m ){ //i= 0 2 4 6 8 10
+             sum += i;// sum = sum + i
+		}
+		System.out.printf("%d까지의 짝수의 합:%d\n", n,sum);
+
+
+
+	}
+}

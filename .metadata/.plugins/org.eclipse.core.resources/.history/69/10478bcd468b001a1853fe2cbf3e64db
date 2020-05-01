@@ -1,0 +1,12 @@
+package myutil;
+
+public class Inter {
+
+	void sub();
+	
+	
+	//선택적 재정의 대상
+	default void sub(){}
+	
+
+}

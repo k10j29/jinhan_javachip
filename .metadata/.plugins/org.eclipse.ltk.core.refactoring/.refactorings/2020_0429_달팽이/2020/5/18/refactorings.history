@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;InterTest.java&apos; to &apos;2020_0429_인터페이스&apos;&#x0D;&#x0A;- Original project: &apos;2020_0429_달팽이&apos;&#x0D;&#x0A;- Destination element: &apos;2020_0429_인터페이스&apos;&#x0D;&#x0A;- Original element: &apos;myutil.InterTest.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="=2020_0429_인터페이스" element1="/src&lt;myutil{InterTest.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1588298508945" units="1" version="1.0"/>
+</session>

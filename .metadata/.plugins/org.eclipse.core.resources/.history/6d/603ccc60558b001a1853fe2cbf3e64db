@@ -1,0 +1,11 @@
+package mymain;
+
+import javax.swing.JFrame;
+
+public class BaseWin extends JFrame {
+
+	public static void main(String[] args) {
+
+	}
+
+}

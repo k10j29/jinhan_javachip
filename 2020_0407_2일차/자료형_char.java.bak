@@ -1,0 +1,44 @@
+class 자료형_char 
+{
+	public static void main(String[] args) 
+	{
+		//문자형  : char (2byte)
+		//상수    : 'A'  '한'  '韓'
+		//출력서식: %c
+
+        //ASCII(0~127)
+		//0~31 : 통신 및 제어문자
+        //32~  : 일반문자
+		//       'A':65   'a':97  '0':48  ' ':32
+		//             (32) 
+
+		//제어문자 
+		// Enter : \r\n
+		// \n : new line  10     (줄바꾸기)
+		// \r : carrige return 13(처음으로..)
+		// \t : tab
+		// \b : left arrow
+
+		char ch = 'A';
+        System.out.printf("ch = %c\r\n",ch);
+
+		ch = '한';
+		System.out.printf("ch = %c\n",ch);
+
+		ch = '韓';
+		System.out.printf("ch = %c\n",ch);
+
+		ch = 'A';                               // 1      2
+		System.out.printf("[%c]의 Code Value:%d\n",ch,(int)ch);
+
+        ch = '한'; //0xd55c
+		System.out.printf("[%c]의 Code Value:%x\n",ch,(int)ch);
+
+		System.out.printf("0xd55c => %c\n", 0xd55c);
+
+		// 제어문자
+		System.out.println("A\tB\tC");
+
+
+	}
+}

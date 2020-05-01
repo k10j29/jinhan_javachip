@@ -1,0 +1,14 @@
+package myutil;
+
+public class Snail {
+
+	public static void main(String[] args) {
+		
+		int [][] snail_array;
+		int chasu;
+		
+		
+
+	}
+
+}

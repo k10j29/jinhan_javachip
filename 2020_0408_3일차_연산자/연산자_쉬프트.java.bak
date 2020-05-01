@@ -1,0 +1,33 @@
+class 연산자_쉬프트 
+{
+	public static void main(String[] args) 
+	{
+		//쉬프트(2진) :  >>  <<   >>>
+
+	    int n = 10;
+		int result;
+		System.out.printf("[%32s]\n", 
+			              Integer.toBinaryString(n) );
+
+		// n >> 2
+        result = n >> 2;
+		System.out.printf("[%32s]\n", 
+			              Integer.toBinaryString(result) );
+
+		// n << 2
+        result = n << 2;
+		System.out.printf("[%32s]\n", 
+			              Integer.toBinaryString(result) );
+
+        n = -1;  
+        System.out.printf("[%32s]\n", 
+			              Integer.toBinaryString(n) );
+		
+		result = n >> 4;
+		System.out.println("-1 >> 4");
+		System.out.printf("[%32s]\n", 
+			              Integer.toBinaryString(result) );
+
+
+	}
+}
