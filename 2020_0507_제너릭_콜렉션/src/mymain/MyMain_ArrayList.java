@@ -1,5 +1,12 @@
 package mymain;
 
+
+
+
+
+//동적 배열 zero 에서 시작에서 하나씩 늘어남
+//추출가능
+
 // 배열 
 // set 
 // ArrayList 

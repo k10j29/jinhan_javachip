@@ -1,5 +1,13 @@
 package mymain;
 
+
+
+
+
+
+//Set 은 중복값을 허락하지않음
+//무작위로 들어감
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;

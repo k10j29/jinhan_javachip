@@ -1,5 +1,10 @@
 package mymain;
 
+
+
+
+//Key 와 Value 가 한쌍으로 저장되는 구조 (
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
