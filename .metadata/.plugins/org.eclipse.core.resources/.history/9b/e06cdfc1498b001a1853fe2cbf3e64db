@@ -1,5 +1,0 @@
-package myutil;
-
-public enum Direction {
-
-}
