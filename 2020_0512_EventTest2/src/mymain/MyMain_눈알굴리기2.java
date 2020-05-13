@@ -15,14 +15,14 @@ import javax.swing.JPanel;
 public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 
 	//
-	final static int GRIMPAN_WIDTH = 400;
-	final static int GRIMPAN_HEIGHT = 600;
+	final static int GRIMPAN_WIDTH = 500;
+	final static int GRIMPAN_HEIGHT = 514;
 
 	static Image back_image;
 	static Image back_image_off;
 	static {
-		back_image = new ImageIcon("Ä³·Î·Î.png").getImage();
-		back_image_off = new ImageIcon("Ä³·Î·Î_off.png").getImage();
+		back_image = new ImageIcon("sim.png").getImage();
+		back_image_off = new ImageIcon("sim2.png").getImage();
 	}
 
 	JPanel grimPan;
@@ -87,6 +87,8 @@ public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 				Point pt = e.getPoint();
 				move_eyeball_left_position(pt);
 				move_eyeball_right_position(pt);
+
+				check_eye_in_mouse(pt); // ´«¾È¿¡ ¸¶¿ì½º Æ÷ÀÎÅÍ°¡ µé¾î ¿Ô´À³Ä
 				grimPan.repaint();
 			}
 
@@ -95,6 +97,9 @@ public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 				// TODO Auto-generated method stub
 				// ´«¾Ë ¿øÀ§Ä¡
 				init_eyeball_position();
+
+				bEyeClosed = false;
+
 				grimPan.repaint();
 			}
 
@@ -104,6 +109,7 @@ public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 				Point pt = e.getPoint();
 				move_eyeball_left_position(pt);
 				move_eyeball_right_position(pt);
+				check_eye_in_mouse(pt); // ´«¾È¿¡ ¸¶¿ì½º Æ÷ÀÎÅÍ°¡ µé¾î ¿Ô´À³Ä
 				grimPan.repaint();
 			}
 
@@ -114,6 +120,11 @@ public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 
 	}
 
+	protected void check_eye_in_mouse(Point pt) {
+		// TODO Auto-generated method stub
+
+	}
+
 	protected void move_eyeball_right_position(Point pt) {
 		// TODO Auto-generated method stub
 		int x = pt.x - eye_right.x;//
@@ -121,6 +132,28 @@ public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 
 		// ºøº¯ÀÇ ±æÀÌ ±¸ÇÏ±â
 		double r = Math.sqrt(x * x + y * y);
+
+		if (r <= eye_radius) {
+
+			bEyeClosed = true;
+			return;
+		}
+
+		// ¿ÞÂÊ´« Ã¼Å©
+
+		x = pt.x - eye_left.x;//
+		y = pt.y - eye_left.y;//
+
+		// ºøº¯ÀÇ ±æÀÌ ±¸ÇÏ±â
+		r = Math.sqrt(x * x + y * y);
+
+		if (r <= eye_radius) {
+
+			bEyeClosed = true;
+		}
+
+		bEyeClosed = false;
+
 		// ºøº¯ÀÇ ºñÀ²
 		double r_rate = eyeball_radius / r;
 
@@ -156,18 +189,19 @@ public class MyMain_´«¾Ë±¼¸®±â2 extends JFrame {
 		eyeball_right.y = eye_right.y;
 
 		// ´«¾ËÀÇ ¹ÝÁö¸§( ´«¹ÝÁö¸§/2 )
-		eyeball_radius = eye_radius / 2;
+		eyeball_radius = eye_radius / 7;
 	}
 
 	private void init_eye_position() {
 		// TODO Auto-generated method stub
 		// ¿ÞÂÊ´«
-		eye_left.x = 115;// GRIMPAN_WIDTH / 4;
-		eye_left.y = 227;// GRIMPAN_HEIGHT / 2;
+		// ¿ÞÂÊ´«
+		eye_left.x = 251;
+		eye_left.y = 261;
 
 		// ¿À¸¥ÂÊ´«
-		eye_right.x = 287;// GRIMPAN_WIDTH/4 * 3;
-		eye_right.y = 232;// GRIMPAN_HEIGHT / 2;
+		eye_right.x = 331;
+		eye_right.y = 242;
 
 		// ´«ÀÇ ¹ÝÁö¸§
 		eye_radius = GRIMPAN_WIDTH / 4 - 50;
