@@ -42,12 +42,12 @@ public class MyMain_사원등록 extends JFrame {
 //1
 
 		JPanel p1 = new JPanel(fl);
-		JLabel jck_name = new JLabel("성         명");
+		JLabel jck_name = new JLabel("성         명",JLabel.RIGHT);
 		p1.add(jck_name);
 		JTextField jck_namef = new JTextField(10);
 		p1.add(jck_namef);
 
-		JLabel jlb_gender = new JLabel("성         별");
+		JLabel jlb_gender = new JLabel("성         별",JLabel.CENTER);
 
 		JRadioButton jrd_male = new JRadioButton("남자");
 		JRadioButton jrd_female = new JRadioButton("여자");
@@ -63,7 +63,7 @@ public class MyMain_사원등록 extends JFrame {
 //2
 
 		JPanel p2 = new JPanel(fl);
-		JLabel jck_num = new JLabel("주민등록번호");
+		JLabel jck_num = new JLabel("주민등록번호", JLabel.RIGHT);
 		p2.add(jck_num);
 		JTextField jck_num1 = new JTextField(8);
 		p2.add(jck_num1);
@@ -75,7 +75,7 @@ public class MyMain_사원등록 extends JFrame {
 //3
 
 		JPanel p3 = new JPanel(fl);
-		JLabel jck_addr = new JLabel("주         소");
+		JLabel jck_addr = new JLabel("주         소",JLabel.RIGHT);
 
 		p3.add(jck_addr);
 		JTextField jck_addr2 = new JTextField(20);
@@ -84,7 +84,7 @@ public class MyMain_사원등록 extends JFrame {
 //4
 
 		JPanel p4 = new JPanel(fl);
-		JLabel jlb_dept = new JLabel("부   서   명");
+		JLabel jlb_dept = new JLabel("부   서   명",JLabel.RIGHT);
 		p4.add(jlb_dept);
 
 		String[] dept_array = { "기획부", "예능부", "총무부", "인사부" };
@@ -94,7 +94,7 @@ public class MyMain_사원등록 extends JFrame {
 
 		JPanel p5 = new JPanel(fl);
 
-		JLabel jck_hob = new JLabel("취         미");
+		JLabel jck_hob = new JLabel("취         미",JLabel.RIGHT);
 		JCheckBox jck_hob1 = new JCheckBox("운동");
 		JCheckBox jck_hob2 = new JCheckBox("음악감사");
 		JCheckBox jck_hob3 = new JCheckBox("영화");
@@ -108,7 +108,7 @@ public class MyMain_사원등록 extends JFrame {
 //6
 
 		JPanel p6 = new JPanel(fl);
-		JLabel jlb_profile = new JLabel("자  기  소  개");
+		JLabel jlb_profile = new JLabel("자  기  소  개",JLabel.RIGHT);
 		p6.add(jlb_profile);
 
 //상단 패널넣기		
