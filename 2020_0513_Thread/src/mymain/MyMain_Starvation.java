@@ -13,9 +13,9 @@ class MyRunnable2 implements Runnable {
 			synchronized (this) {
 				money = money - 1000;
 
-				// wait pool에 잠든 쓰레드 깨운다
+				
 				if (money > 0)
-					notify();
+					notify(); // wait pool에 잠든 쓰레드 깨운다
 
 				System.out.printf("--[%s] 먼저 잔액:%d--\n", name, money);
 
