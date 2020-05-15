@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import vo.PersonVo;
 
@@ -28,6 +29,7 @@ public class MyMain_직렬화2 {
 		 * 
 		 * oos2.close(); os.close(); System.out.println("--저장완료--");
 		 */
+		
 		
 		
 		
