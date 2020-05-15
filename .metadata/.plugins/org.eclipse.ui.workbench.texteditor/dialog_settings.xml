@@ -6,14 +6,14 @@
 		<item key="isRegEx" value="true"/>
 		<item key="selection" value=""/>
 		<list key="findhistory">
+			<item value="col"/>
+			<item value="keype"/>
 			<item value="Seri"/>
 			<item value="Random"/>
 			<item value="red"/>
 			<item value="green"/>
 			<item value="paint"/>
 			<item value="adapter"/>
-			<item value="f"/>
-			<item value="/ TODO Auto-generated method stub"/>
 		</list>
 		<list key="replacehistory">
 			<item value="green"/>
