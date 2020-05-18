@@ -1,8 +1,9 @@
 package mymain;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class Block extends item {
+public class Block extends Item implements Serializable {
 
 	boolean bShow = true; // 보여달라 깨지지않은 블럭
 
