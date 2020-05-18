@@ -17,8 +17,8 @@ import javax.xml.crypto.dsig.keyinfo.KeyValue;
 public class MyMain_BlockGame extends JFrame {
 
 	// 게임판의 크기
-	final static int GAMEPAN_W = 500;
-	final static int GAMEPAN_H = 400;
+	final static int GAMEPAN_W = 700;
+	final static int GAMEPAN_H = 500;
 
 	JPanel gamePan;
 
@@ -39,6 +39,9 @@ public class MyMain_BlockGame extends JFrame {
 	// 현재 키눌림상태
 	int key_state = 0;
 
+	// Block 에 대하여
+	Block[][] block_array = new Block[5][7];
+
 	public MyMain_BlockGame() {
 		// TODO Auto-generated constructor stub
 		// 타이틀
@@ -49,6 +52,9 @@ public class MyMain_BlockGame extends JFrame {
 
 		// Bar & Ball 초기화
 		init_bar();
+
+		// Block 초기화
+		inti_block();
 
 		// 타이머 초기화
 		init_timer();
@@ -72,10 +78,23 @@ public class MyMain_BlockGame extends JFrame {
 
 	}
 
+	private void inti_block() {
+		// 전체 화면폭 / 배열의 열수
+		int block_w = GAMEPAN_W / block_array[0].length;
+		int block_h = 30;
+		Color[] color_array = { Color.red, Color.green, 
+				Color.black, Color.gray, 
+				Color.yellow, Color.magenta,
+				Color.pink, Color.CYAN };
+		
+		
+
+	}
+
 	private void init_bar() {
 		// TODO Auto-generated method stub
-		int bar_width = 120;
-		int bar_height = 15;
+		int bar_width = 100;
+		int bar_height = 30;
 
 		// Bar 위치
 		bar.pos.x = GAMEPAN_W / 2 - bar_width / 2;
