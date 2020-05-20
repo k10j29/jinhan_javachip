@@ -6,6 +6,7 @@
 		<item key="isRegEx" value="true"/>
 		<item key="selection" value="JTextField"/>
 		<list key="findhistory">
+			<item value="//len 은 수신된 데이터 크기를 이야기함"/>
 			<item value="JTextField"/>
 			<item value="field"/>
 			<item value="jlist_group"/>
@@ -13,7 +14,6 @@
 			<item value="group_list"/>
 			<item value="grou"/>
 			<item value="수신데이"/>
-			<item value="display_mess"/>
 		</list>
 		<list key="replacehistory">
 			<item value="green"/>

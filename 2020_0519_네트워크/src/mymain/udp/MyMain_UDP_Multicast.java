@@ -1,4 +1,4 @@
-package mymain_udp;
+package mymain.udp;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -92,8 +92,8 @@ public class MyMain_UDP_Multicast extends JFrame {
 
 		jlist_group.setFont(font);
 
-		String[] ar = { "224.0.0.2", "224.0.0.3", "224.0.0.4" };
-		jlist_group.setListData(ar);
+//		String[] ar = { "224.0.0.2", "224.0.0.3", "224.0.0.4" };
+//		jlist_group.setListData(ar);
 
 //		// 마우스 이벤트 등록
 //		jlist_group.addMouseListener(new MouseAdapter()

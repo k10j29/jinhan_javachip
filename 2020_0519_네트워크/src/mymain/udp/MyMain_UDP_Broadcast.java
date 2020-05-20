@@ -1,4 +1,4 @@
-package mymain_udp;
+package mymain.udp;
 
 import java.awt.Dimension;
 import java.awt.Font;
