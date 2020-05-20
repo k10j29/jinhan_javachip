@@ -95,25 +95,25 @@ public class MyMain_UDP_Multicast extends JFrame {
 		String[] ar = { "224.0.0.2", "224.0.0.3", "224.0.0.4" };
 		jlist_group.setListData(ar);
 
-		// 마우스 이벤트 등록
-		jlist_group.addMouseListener(new MouseAdapter()
-
-		{
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-				// Jlist 에서 선택한 값 얻기
-
-				String ip = jlist_group.getSelectedValue();
-
-				// 주소창에 넣기
-
-				jtf_address.setText(ip);
-
-			}
-
-		});
+//		// 마우스 이벤트 등록
+//		jlist_group.addMouseListener(new MouseAdapter()
+//
+//		{
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				// TODO Auto-generated method stub
+//
+//				// Jlist 에서 선택한 값 얻기
+//
+//				String ip = jlist_group.getSelectedValue();
+//
+//				// 주소창에 넣기
+//
+//				jtf_address.setText(ip);
+//
+//			}
+//
+//		});
 
 	}
 
