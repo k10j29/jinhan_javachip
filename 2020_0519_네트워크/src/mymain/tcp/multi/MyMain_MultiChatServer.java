@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class MyMain_MultiChatServer extends JFrame {
 
 	// 접속자목록 저장할 객체
 	List<String> userList = new ArrayList<String>();
+
+	// 쓰레드 동기화 관리객체
+	Object syncObj = new Object();
 
 	public MyMain_MultiChatServer() {
 		// TODO Auto-generated constructor stub
@@ -83,13 +87,14 @@ public class MyMain_MultiChatServer extends JFrame {
 							// 연결요청->자소켓생성->연결
 							Socket child = server.accept();
 
-							// 수신용쓰레드 객체생성
-							ReadThread rt = new ReadThread(child);
-							rt.start();
-
-							socketList.add(rt);
-							// 접속자수 갱신하는 메소드
-							my_update_user_count();
+							synchronized (syncObj) {
+								// 수신용쓰레드 객체생성
+								ReadThread rt = new ReadThread(child);
+								rt.start();
+								socketList.add(rt);
+								// 접속자수 갱신하는 메소드
+								my_update_user_count();
+							}
 
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -219,16 +224,49 @@ public class MyMain_MultiChatServer extends JFrame {
 					}
 
 					// 서버 모니터
-					my_display_message(readStr);
+					InetAddress ia = child.getInetAddress();
+					String monitor_message = String.format("[%s] %s", ia.getHostAddress(), readStr);
+					my_display_message(monitor_message);
 
 					// 입장시 : readStr = "IN#홍길동"
 					String[] msg_array = readStr.split("#");
 					// 0 1
 					// msg_array = { "IN", "홍길동"};
 					if (msg_array[0].equals("IN")) {
-						userList.add(msg_array[1]);
-						// 접속자 목록 갱신
-						my_update_user_list();
+						// 입장처리
+						synchronized (syncObj) {
+							userList.add(msg_array[1]);
+							// 접속자 목록 갱신
+							my_update_user_list();
+
+							// 모든 접속자에게 메시지 전송
+							my_send_message_all(readStr + "\n");
+
+							// 접속자목록 전송
+							my_send_user_list();
+
+						}
+					} else if (msg_array[0].equals("MSG")) {
+						// 채팅내용이면...
+						synchronized (syncObj) {
+							String[] bad_str = { "바보", "개놈", "똥개", "멍청이" };
+							// 욕설 필터링...
+							for (String bad : bad_str) {
+								readStr = readStr.replaceAll(bad, "***");
+							}
+
+							// 모든 접속자에게 메시지 전송
+							my_send_message_all(readStr + "\n");
+						}
+
+					} else if (msg_array[0].equals("DRAW")) {
+
+						synchronized (syncObj) {
+
+							my_send_message_all(readStr + "\n");
+
+						}
+
 					}
 
 				} catch (IOException e) {
@@ -241,20 +279,30 @@ public class MyMain_MultiChatServer extends JFrame {
 			} // end-while
 
 			// 퇴장상황..
-			// socket , user 리스트 위치가 동일함
+			// socketList와 userList의 위치가 동일
+			synchronized (syncObj) {
+				// 현재 객체가 몇번째 있냐?
+				int index = socketList.indexOf(this);
 
-			int index = socketList.indexOf(this);
+				// 퇴장자 닉네임
+				String del_user_name = userList.get(index);
 
-			// 나간 사람 이름 얻어내기
-			String del_user_name = userList.get(index);
+				// 사용자명 삭제
+				userList.remove(index);
+				my_update_user_list();
 
-			// 사용자 퇴장시키기 (사용자명 삭제)
-			userList.remove(index);
+				socketList.remove(index);
+				my_update_user_count();
 
-			my_update_user_list();
+				// 퇴장메시지를 모든 접속자에게 전송
+				String send_data = String.format("OUT#%s\n", del_user_name);
 
-			socketList.remove(this);
-			my_update_user_count();
+				my_send_message_all(send_data);
+
+				// 서버 모니터
+				my_display_message(send_data);
+
+			}
 
 		}
 
@@ -265,6 +313,39 @@ public class MyMain_MultiChatServer extends JFrame {
 		String[] user_array = new String[userList.size()];
 		userList.toArray(user_array);
 		jlist_user.setListData(user_array);
+
+	}
+
+	public void my_send_user_list() {
+		// TODO Auto-generated method stub
+		// 전송 데이터 포장
+		StringBuffer sb = new StringBuffer("LIST#");
+		for (String user : userList) {// 길동1 길동2
+			sb.append(user);
+			sb.append("#");
+		}
+		sb.append("\n");
+
+		// sb = "LIST#길동1#길동2#\n"
+		my_send_message_all(sb.toString());
+
+	}
+
+	public void my_send_message_all(String message) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < socketList.size(); i++) {
+			ReadThread rt = socketList.get(i);
+
+			try {
+				// 메시지 전송
+				rt.child.getOutputStream().write(message.getBytes());
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				// e.printStackTrace();
+			}
+
+		}
 
 	}
 
