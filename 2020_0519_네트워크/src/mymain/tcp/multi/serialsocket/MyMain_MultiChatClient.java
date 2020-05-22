@@ -1,4 +1,4 @@
-package mymain.tcp.multi;
+package mymain.tcp.multi.serialsocket;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,7 +19,10 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -40,10 +43,13 @@ public class MyMain_MultiChatClient extends JFrame {
 
 	JButton jbt_connect; // 연결버튼
 	boolean bConnect = false;// 연결상태
-	String user_name = "크레이지아케이드";
+	String user_name = "Font.BOLD, 18";
 //			"소켓하고 소켓이 연결되어 있으면 소켓을 이용하여 상대방 정보를 알수있다.";
 
 	Socket client;
+
+	ObjectOutputStream oos = null;
+	ObjectInputStream ois = null;
 
 	JList<String> jlist_user; // 접속자목록
 
@@ -110,11 +116,17 @@ public class MyMain_MultiChatClient extends JFrame {
 					return;
 
 				Point pt = e.getPoint();
-				String send_data = String.format("DRAW#%d#%d#%d#%d\n", pt.x, pt.y, thick, color);
 
 				try {
 
-					client.getOutputStream().write(send_data.getBytes());
+					Data data = new Data();
+					data.data_kind = Data.DRAW;
+					data.x = pt.x;
+					data.y = pt.y;
+					data.thick = thick;
+					data.color = color;
+
+					oos.writeObject(data);
 
 				} catch (Exception e2) {
 					// TODO: handle exception
@@ -180,12 +192,14 @@ public class MyMain_MultiChatClient extends JFrame {
 			return;
 		}
 
-		// 메시지 : "MSG#홍길동#안녕하세요\n"
-		String send_data = String.format("MSG#%s#%s\n", user_name, message);
-
 		try {
 			// 전송
-			client.getOutputStream().write(send_data.getBytes());
+			Data data = new Data();
+			data.data_kind = Data.MSG;
+			data.user_name = user_name;
+			data.message = message;
+
+			oos.writeObject(data);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -310,9 +324,17 @@ public class MyMain_MultiChatClient extends JFrame {
 			// client = new Socket("localhost", 8500);
 			client = new Socket(ServerInfo.HOST, ServerInfo.PORT);
 
+			oos = new ObjectOutputStream(client.getOutputStream());
+			ois = new ObjectInputStream(client.getInputStream());
+
 			// 입장메시지 전송 : "IN#홍길동\n"
-			String send_data = String.format("IN#%s\n", user_name);
-			client.getOutputStream().write(send_data.getBytes());
+//			String send_data = String.format("IN#%s\n", user_name);
+//			client.getOutputStream().write(send_data.getBytes());
+
+			Data data = new Data();
+			data.data_kind = Data.IN; // 입장데이타
+			data.user_name = user_name; // 입장자명
+			oos.writeObject(data);
 
 			// 데이터 수신
 			my_read_message();
@@ -323,20 +345,12 @@ public class MyMain_MultiChatClient extends JFrame {
 		}
 	}
 
-	BufferedReader br = null;
+	// BufferedReader br = null;
 
 	private void my_read_message() {
 		// TODO Auto-generated method stub
 
 		// 수신스트림 필터
-		try {
-			InputStreamReader isr = new InputStreamReader(client.getInputStream());
-			br = new BufferedReader(isr);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		// 수신용 쓰레드 생성/구동
 		new Thread() {
@@ -346,58 +360,52 @@ public class MyMain_MultiChatClient extends JFrame {
 				while (true) {
 
 					try {
-						String readStr = br.readLine();
+						// String readStr = br.readLine();
+
+						// 객체 수신 (역 직렬화)
+						Data data = (Data) ois.readObject();
+
 						// 정상: close()
-						if (readStr == null)
+						if (data == null)
 							break;
 
-						String[] msg_array = readStr.split("#");
-						// 입장 : "IN#홍길동"
-						// 퇴장 : "OUT#홍길동"
-						// 목록 : "LIST#길동1#길동2#"
-						// 채팅 : "MSG#홍길동#잘지내?"
-						// 0 1
-						// msg_array = { "IN" , "홍길동"};
-						// msg_array = { "OUT", "홍길동"};
-						// msg_array = { "LIST", "길동1","길동2",""};
-						// msg_array = { "MSG", "홍길동","대화내용?"};
-						if (msg_array[0].equals("IN")) {
-							String display_message = String.format("▶▶[%s]님 입장", msg_array[1]);
+						if (data.data_kind == Data.IN) {
+							String display_message = String.format("▶▶[%s]님 입장", data.user_name);
 							// 채팅출력창에 출력
 							my_display_message(display_message);
 
-						} else if (msg_array[0].equals("OUT")) {
-							String display_message = String.format("◀◀[%s]님 퇴장", msg_array[1]);
+						} else if (data.data_kind == Data.OUT) {
+							String display_message = String.format("◀◀[%s]님 퇴장", data.user_name);
 
 							my_display_message(display_message);
 
-						} else if (msg_array[0].equals("LIST")) {
+						} else if (data.data_kind == Data.LIST) {
 							// System.out.println(readStr);
-							my_update_user_list(readStr);
+							my_update_user_list(data.userList);
 
-						} else if (msg_array[0].equals("MSG")) {
+						} else if (data.data_kind == Data.MSG) {
 
-							String display_message = String.format("[%s]님 말씀 : \r\n %s", msg_array[1], msg_array[2]);
+							String display_message = String.format("[%s]님 말씀 : \r\n %s", data.user_name, data.message);
 
 							my_display_message(display_message);
 
-						} else if (msg_array[0].equals("DRAW")) {
+						} else if (data.data_kind == Data.DRAW) {
 //							msg_array = { "DRAW", pt.x, pt.y, thick, thick, color };
 
 							try {
 
-								int x = Integer.parseInt(msg_array[1]);
-								int y = Integer.parseInt(msg_array[2]);
-								int t = Integer.parseInt(msg_array[3]);
-								int c = Integer.parseInt(msg_array[4]);
+//								int x = Integer.parseInt(msg_array[1]);
+//								int y = Integer.parseInt(msg_array[2]);
+//								int t = Integer.parseInt(msg_array[3]);
+//								int c = Integer.parseInt(msg_array[4]);
 
 								Graphics g = memPan.getGraphics();
 
-								Color line_color = new Color(c);
+								Color line_color = new Color(data.color);
 
 								g.setColor(line_color);
 
-								g.fillOval(x, y, t, t);
+								g.fillOval(data.x - data.thick / 2, data.y - data.thick / 2, data.thick, data.thick);
 
 								grimPan.repaint();
 
@@ -406,7 +414,7 @@ public class MyMain_MultiChatClient extends JFrame {
 							}
 
 						}
-					} catch (IOException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						// e.printStackTrace();
 						// 비정상 종료되었을 때
@@ -431,14 +439,12 @@ public class MyMain_MultiChatClient extends JFrame {
 
 	}
 
-	protected void my_update_user_list(String readStr) {
-		// TODO Auto-generated method stub
-		// readStr = "LIST#길동1#길동2#"
-		// "LIST#" 제거
-		readStr = readStr.replaceAll("LIST#", "");
-		// readStr = "길동1#길동2#"
-		jlist_user.setListData(readStr.split("#"));
+	protected void my_update_user_list(List<String> userList) {
 
+		String[] user_array = new String[userList.size()];
+		userList.toArray(user_array);
+
+		jlist_user.setListData(user_array);
 	}
 
 	protected void my_display_message(String display_message) {

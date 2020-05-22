@@ -1,4 +1,4 @@
-package mymain.tcp.multi;
+package mymain.tcp.multi.serialsocket;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -188,18 +190,27 @@ public class MyMain_MultiChatServer extends JFrame {
 
 		Socket child;
 
-		// 해당소켓이 읽을때 line단위로 읽기위해서 선언
-		BufferedReader br = null;
+		// 해당소켓을 읽을때 객체 단위로 읽기위해서 선언
+
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
 
 		public ReadThread(Socket child) {
 			super();
 			this.child = child;
 
 			try {
-				// InputStream->InputStreamReader
-				InputStreamReader isr = new InputStreamReader(child.getInputStream());
-				// InputStreamReader->BufferedReader
-				br = new BufferedReader(isr);
+
+				// Client 와 server 의 생성은 Cross 로 해야한다
+
+//				1 - ObjectOutputStream oos = null;
+//				2 - ObjectInputStream ois = null;
+
+//				2 - ois = new ObjectInputStream(child.getInputStream());
+//				1 - oos = new ObjectOutputStream(child.getOutputStream());
+
+				ois = new ObjectInputStream(child.getInputStream());
+				oos = new ObjectOutputStream(child.getOutputStream());
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -215,61 +226,77 @@ public class MyMain_MultiChatServer extends JFrame {
 
 				try {
 
-					String readStr = br.readLine();
+					// String readStr = br.readLine();
+
+					// 직렬로 전달된 데이터를 -> 역직렬화 받기
+					Data data = (Data) ois.readObject();
 
 					// 상대방 소켓이 close되면 발생(정상종료)
-					if (readStr == null) {
+					if (data == null) {
 						// System.out.println("--정상종료--");
 						break;
 					}
 
 					// 서버 모니터
 					InetAddress ia = child.getInetAddress();
-					String monitor_message = String.format("[%s] %s", ia.getHostAddress(), readStr);
+					String monitor_message = String.format("[%s] [%d] [%s] [%s] [%d, %d] [%d]",
+
+							ia.getHostAddress(), 
+							data.data_kind, 
+							data.user_name, 
+							data.message, 
+							data.x, 
+							data.y,
+							data.thick
+
+					);
 					my_display_message(monitor_message);
 
-					// 입장시 : readStr = "IN#홍길동"
-					String[] msg_array = readStr.split("#");
-					// 0 1
-					// msg_array = { "IN", "홍길동"};
-					if (msg_array[0].equals("IN")) {
+//					//Client 입장 정보 전송
+//					Data data = new Data();
+//					data.data_kind = Data.IN;
+//					data.user_name=" 홍길동";
+
+					if (data.data_kind == Data.IN) {
 						// 입장처리
 						synchronized (syncObj) {
-							userList.add(msg_array[1]);
+							userList.add(data.user_name);
 							// 접속자 목록 갱신
 							my_update_user_list();
 
 							// 모든 접속자에게 메시지 전송
-							my_send_message_all(readStr + "\n");
+							my_send_message_all(data);
 
 							// 접속자목록 전송
 							my_send_user_list();
 
 						}
-					} else if (msg_array[0].equals("MSG")) {
+					} else if (data.data_kind == Data.MSG) {
 						// 채팅내용이면...
 						synchronized (syncObj) {
 							String[] bad_str = { "바보", "개놈", "똥개", "멍청이" };
 							// 욕설 필터링...
+							String message = data.message;
 							for (String bad : bad_str) {
-								readStr = readStr.replaceAll(bad, "***");
+								message = message.replaceAll(bad, "***");
 							}
+							data.message = message;
 
 							// 모든 접속자에게 메시지 전송
-							my_send_message_all(readStr + "\n");
+							my_send_message_all(data);
 						}
 
-					} else if (msg_array[0].equals("DRAW")) {
+					} else if (data.data_kind == Data.DRAW) {
 
 						synchronized (syncObj) {
 
-							my_send_message_all(readStr + "\n");
+							my_send_message_all(data);
 
 						}
 
 					}
 
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					// e.printStackTrace();
 					// System.out.println("--비정상종료--");
@@ -295,12 +322,16 @@ public class MyMain_MultiChatServer extends JFrame {
 				my_update_user_count();
 
 				// 퇴장메시지를 모든 접속자에게 전송
-				String send_data = String.format("OUT#%s\n", del_user_name);
+				Data data = new Data();
+				data.data_kind = Data.OUT;
+				data.user_name = del_user_name;
 
-				my_send_message_all(send_data);
+				my_send_message_all(data);
 
 				// 서버 모니터
-				my_display_message(send_data);
+
+				String str = String.format("[퇴장] : %s ", del_user_name);
+				my_display_message(str);
 
 			}
 
@@ -317,28 +348,23 @@ public class MyMain_MultiChatServer extends JFrame {
 	}
 
 	public void my_send_user_list() {
-		// TODO Auto-generated method stub
-		// 전송 데이터 포장
-		StringBuffer sb = new StringBuffer("LIST#");
-		for (String user : userList) {// 길동1 길동2
-			sb.append(user);
-			sb.append("#");
-		}
-		sb.append("\n");
 
-		// sb = "LIST#길동1#길동2#\n"
-		my_send_message_all(sb.toString());
+		Data data = new Data();
+		data.data_kind = Data.LIST; // 사용자 목록 넘어간다~
+		data.userList = userList;
+
+		my_send_message_all(data);
 
 	}
 
-	public void my_send_message_all(String message) {
+	public void my_send_message_all(Data data) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < socketList.size(); i++) {
 			ReadThread rt = socketList.get(i);
 
 			try {
-				// 메시지 전송
-				rt.child.getOutputStream().write(message.getBytes());
+				// 객체 (data) 전송
+				rt.oos.writeObject(data);
 
 			} catch (Exception e) {
 				// TODO: handle exception
