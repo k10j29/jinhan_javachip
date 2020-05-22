@@ -6,14 +6,14 @@
 		<item key="isRegEx" value="true"/>
 		<item key="selection" value=""/>
 		<list key="findhistory">
-			<item value="msg"/>
-			<item value="DRAW"/>
-			<item value="마우스"/>
-			<item value=")"/>
-			<item value="my_read"/>
-			<item value="접속"/>
-			<item value="socketRead"/>
-			<item value="readLine"/>
+			<item value="Final"/>
+			<item value="종류를"/>
+			<item value="메시지"/>
+			<item value="my_uap"/>
+			<item value="입장메시지"/>
+			<item value="연결상태"/>
+			<item value="서버 모"/>
+			<item value="채팅내용"/>
 		</list>
 		<list key="replacehistory">
 			<item value="green"/>

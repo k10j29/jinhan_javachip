@@ -43,7 +43,7 @@ public class MyMain_MultiChatClient extends JFrame {
 
 	JButton jbt_connect; // 연결버튼
 	boolean bConnect = false;// 연결상태
-	String user_name = "Font.BOLD, 18";
+	String user_name = "1" ;
 //			"소켓하고 소켓이 연결되어 있으면 소켓을 이용하여 상대방 정보를 알수있다.";
 
 	Socket client;
