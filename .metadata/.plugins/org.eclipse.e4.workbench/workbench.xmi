@@ -576,7 +576,6 @@
       <tags>View</tags>
       <tags>categoryTag:Java</tags>
       <tags>active</tags>
-      <tags>activeOnClose</tags>
       <menus xmi:id="_8btDSpaMEeqhc-_ty0c0Xg" elementId="org.eclipse.jdt.ui.PackageExplorer">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -660,7 +659,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8btnpZaMEeqhc-_ty0c0Xg" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_ennEsJvDEeq0m6o3Eu9uAA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_8bvc6ZaMEeqhc-_ty0c0Xg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_xb7hUJ4eEeqonMUmO9hP8w" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_8bvc6ZaMEeqhc-_ty0c0Xg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8btnspaMEeqhc-_ty0c0Xg" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -700,7 +699,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8btoDJaMEeqhc-_ty0c0Xg" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_eno545vDEeq0m6o3Eu9uAA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" enabled="false" type="Check" command="_8bvci5aMEeqhc-_ty0c0Xg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_xb7hXZ4eEeqonMUmO9hP8w" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" enabled="false" type="Check" command="_8bvci5aMEeqhc-_ty0c0Xg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8btoF5aMEeqhc-_ty0c0Xg" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
